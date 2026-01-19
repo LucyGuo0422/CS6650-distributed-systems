@@ -1,0 +1,28 @@
+1.Distribution shape
+The histogram shows a long-tail latency distribution. Most requests complete
+in about 30-37ms, but a small number of requests take much longer, up to
+50ms. This means the service is generally fast, but could be slow occationally.
+
+2.Consistency
+The scatter plot shows the response times are mostly stable, but not perfectly
+consistent. Most requests fall within 30-40ms, but we can see some spikes above
+40ms.
+
+3.Percentiles
+The median latency is around 35ms, but the 95 percentile is significantly higher,
+meaning that the 5% slow performance is much slower than the average, showing
+a high variability.
+
+4.Infrastructure impact
+Since this service is running on a basic EC2 instance, the reasons that contribute
+to variability are likely limited CPU and memory, and shared physical hardware.
+
+5.Scalling implications
+If this system had 100 concurrent users instead of sequential requests, the response
+time would likely be longer, the long tail would become worse, and the EC2 instance
+might get overloaded.
+
+6.Network vs. Processing
+The longer response times are likely caused by both network latency between the local
+machine and EC2, and server processing time on the cloud VM. To further investigate
+this, we can test EC2 locally and compare results.
