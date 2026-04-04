@@ -1,0 +1,92 @@
+services:
+  leader:
+    build:
+      context: .
+      dockerfile: leader/Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - ROLE=leader
+      - STRATEGY=${STRATEGY:-w5r1}
+      - FOLLOWERS=http://follower1:8080,http://follower2:8080,http://follower3:8080,http://follower4:8080
+
+  follower1:
+    build:
+      context: .
+      dockerfile: leader/Dockerfile
+    ports:
+      - "8081:8080"
+    environment:
+      - ROLE=follower
+
+  follower2:
+    build:
+      context: .
+      dockerfile: leader/Dockerfile
+    ports:
+      - "8082:8080"
+    environment:
+      - ROLE=follower
+
+  follower3:
+    build:
+      context: .
+      dockerfile: leader/Dockerfile
+    ports:
+      - "8083:8080"
+    environment:
+      - ROLE=follower
+
+  follower4:
+    build:
+      context: .
+      dockerfile: leader/Dockerfile
+    ports:
+      - "8084:8080"
+    environment:
+      - ROLE=follower
+
+  node1:
+    build:
+      context: .
+      dockerfile: leaderless/Dockerfile
+    ports:
+      - "9081:8080"
+    environment:
+      - PEERS=http://node2:8080,http://node3:8080,http://node4:8080,http://node5:8080
+
+  node2:
+    build:
+      context: .
+      dockerfile: leaderless/Dockerfile
+    ports:
+      - "9082:8080"
+    environment:
+      - PEERS=http://node1:8080,http://node3:8080,http://node4:8080,http://node5:8080
+
+  node3:
+    build:
+      context: .
+      dockerfile: leaderless/Dockerfile
+    ports:
+      - "9083:8080"
+    environment:
+      - PEERS=http://node1:8080,http://node2:8080,http://node4:8080,http://node5:8080
+
+  node4:
+    build:
+      context: .
+      dockerfile: leaderless/Dockerfile
+    ports:
+      - "9084:8080"
+    environment:
+      - PEERS=http://node1:8080,http://node2:8080,http://node3:8080,http://node5:8080
+
+  node5:
+    build:
+      context: .
+      dockerfile: leaderless/Dockerfile
+    ports:
+      - "9085:8080"
+    environment:
+      - PEERS=http://node1:8080,http://node2:8080,http://node3:8080,http://node4:8080
