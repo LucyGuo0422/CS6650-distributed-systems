@@ -1,0 +1,26 @@
+# Git
+.git
+.gitignore
+
+# Documentation
+*.md
+README.md
+
+# Build artifacts
+api
+worker
+*.out
+
+# IDE
+.vscode
+.idea
+
+# OS files
+.DS_Store
+
+# Test files
+*_test.go
+
+# Docker files
+docker-compose.yml
+Dockerfile*

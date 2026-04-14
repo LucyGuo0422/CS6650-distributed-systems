@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.api
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - AWS_REGION=${AWS_REGION:-us-west-2}
+      - DYNAMODB_ALBUMS_TABLE=${DYNAMODB_ALBUMS_TABLE:-albums}
+      - DYNAMODB_PHOTOS_TABLE=${DYNAMODB_PHOTOS_TABLE:-photos}
+      - S3_BUCKET=${S3_BUCKET}
+      - SQS_QUEUE_URL=${SQS_QUEUE_URL}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+    restart: unless-stopped
+
+  worker:
+    build:
+      context: .
+      dockerfile: Dockerfile.worker
+    environment:
+      - AWS_REGION=${AWS_REGION:-us-west-2}
+      - DYNAMODB_PHOTOS_TABLE=${DYNAMODB_PHOTOS_TABLE:-photos}
+      - SQS_QUEUE_URL=${SQS_QUEUE_URL}
+      - WORKER_CONCURRENCY=${WORKER_CONCURRENCY:-20}
+      - AWS_ACCESS_KEY_ID=${AWS_ACCESS_KEY_ID}
+      - AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
+      - AWS_SESSION_TOKEN=${AWS_SESSION_TOKEN}
+    restart: unless-stopped
